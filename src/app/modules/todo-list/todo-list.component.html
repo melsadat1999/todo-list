@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="date">
+    <div class="date_item">
+      <p class="date_day">12</p>
+      <div class="date_UTC">
+        <p>JAN</p>
+        <p>2016</p>
+      </div>
+    </div>
+    <p class="date_today">TUESDAY</p>
+  </div>
+  <ng-container *ngIf="tasks.length; else noData">
+    <ng-container [ngTemplateOutlet]="task"></ng-container>
+  </ng-container>
+  <button (click)="addNewTask()" class="add-task">+</button>
+</div>
+
+<ng-template #task>
+  <div class="container_task">
+    <div class="task-item" *ngFor="let task of tasks">
+      <ng-container *ngIf="!task.isNew">
+        <p>{{ task.title }}</p>
+        <div class="buttons">
+          <button class="delete" (click)="deleteTask(task)">
+            <img src="assets/remove.png" />
+          </button>
+          <button class="edit" (click)="editTask(task)">
+            <img src="assets/compose.png" />
+          </button>
+          <div class="box">
+            <input
+              type="checkbox"
+              class="checkbox"
+              (click)="toggleFinish(task)"
+              [id]="task.id"
+              [checked]="task.isFinish"
+            />
+            <label [for]="task.id">
+              <div id="tick_mark"></div>
+            </label>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="task.isNew">
+        <input
+          type="text"
+          [(ngModel)]="task.title"
+          class="input-title"
+          placeholder="title"
+        />
+        <button
+          (click)="save(task)"
+          [disabled]="task.title.length == 0"
+          class="save-button"
+        >
+          save
+        </button>
+      </ng-container>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #noData>
+  <div class="no-data">
+    <img src="assets/exclamation.png" />
+    <p>empty</p>
+  </div>
+</ng-template>
